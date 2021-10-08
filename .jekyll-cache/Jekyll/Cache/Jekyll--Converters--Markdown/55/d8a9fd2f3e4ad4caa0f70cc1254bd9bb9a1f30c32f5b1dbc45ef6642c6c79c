@@ -1,0 +1,73 @@
+I"h<h2 id="what-we-are-about-to-learn">What we are about to learn</h2>
+<ul>
+  <li>Learn what is Salesforce CLI.</li>
+  <li>How to Install Salesforce CLI.</li>
+  <li>Authorize a Salesforce Org using SF CLI commands.</li>
+</ul>
+
+<h2 id="salesforce-command-line-tool">Salesforce command line tool</h2>
+<p>Salesforce CLI is a tool provided by Salesforce which can be used to perform Salesforce actions right from your terminal program. SF CLI can be utilised by other softwares as well which are installed in your system for example VS Code, Node.js Applications etc.</p>
+
+<p>You can use Salesforce CLI for:</p>
+
+<ul>
+  <li>Aggregate all the tools you need to develop with and perform commands against your Salesforce org</li>
+  <li>Synchronize source to and from scratch orgs.</li>
+  <li>Create and manage orgs</li>
+  <li>Import and Export Data</li>
+  <li>Create and execute tests</li>
+  <li>Create and Install Packages</li>
+</ul>
+
+<p>And uses can be increased according to requirements, those were just few examples showing in what purpose Salesforce CLI can perform.</p>
+
+<h2 id="install-salesforce-cli-on-windows">Install Salesforce CLI on Windows</h2>
+<p>To install Salesforce command line tool you just need to follow below steps:</p>
+
+<ul>
+  <li>You can download Salesforce CLI from <a href="https://developer.salesforce.com/tools/sfdxcli">here</a>. Choose your platform and install it on your device.</li>
+</ul>
+
+<p><img src="/Salesforce-spices/assets/img/install-cli-page.png" alt="Install CLI page" /></p>
+
+<ul>
+  <li>
+    <p>After you have downloaded the file double click it and follow the steps to install it.</p>
+  </li>
+  <li>
+    <p>During the installation it will ask you for the components to install make sure to select both ‘Salesforce CLI version no.’ and ‘Set path to Salesforce CLI’ and click next.</p>
+  </li>
+  <li>
+    <p>Use the default installation options and keep pressing next.</p>
+  </li>
+  <li>
+    <p>That’s it CLI is installed on your device.</p>
+  </li>
+</ul>
+
+<p>You can follow steps for Linux and Mac on this <img src="https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm" alt="documentation" />.</p>
+
+<h2 id="test-command-line-interface">Test Command Line Interface</h2>
+
+<p>To check if CLI is installed on your device properly, open terminal ( In Windows press WIN+R and then type ‘cmd’ without quotes and press enter  AND In Mac just press Control + Option + Shift + T).</p>
+
+<p>Now we will log into an organisation using the terminal commands. For this copy and paste this command in your terminal.</p>
+
+<ul>
+  <li>sfdx force:auth:web:login ( To log into developer edition org or Production )</li>
+  <li>sfdx force:auth:web:login –instanceurl “https://test.salesforce.com” ( To log into Sandbox )</li>
+  <li>sfdx force:auth:web:login –instanceurl “https://customUrl” ( To log in with Custom url )</li>
+</ul>
+
+<p><img src="/Salesforce-spices/assets/img/RunCommand-cli.png" alt="Install CLI page" /></p>
+
+<p>After pasting this command press enter and wait for a second. After a few seconds you’ll see that your browser is opened with the Salesforce login tab. Type your credentials here and click on login button.</p>
+
+<p>When your org is fully opened go back to the terminal, there you can see that a message showing that the org is authorize.</p>
+
+<p><img src="/Salesforce-spices/assets/img/success-cli.png" alt="Install CLI page" /></p>
+
+<p>So now its for sure that you have installed and setup the Salesforce command line interface successfully. Now to learn how to use other commands and perform actions on your org read my other blogs.</p>
+
+<p>Thanks for Reading !!</p>
+:ET

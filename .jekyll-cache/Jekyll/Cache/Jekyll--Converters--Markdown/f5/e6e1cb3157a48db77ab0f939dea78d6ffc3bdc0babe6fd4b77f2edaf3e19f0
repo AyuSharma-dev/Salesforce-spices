@@ -1,0 +1,114 @@
+I"V<h2 id="what-we-are-about-to-learn">What we are about to learn</h2>
+<ul>
+  <li>What are Platform Events</li>
+  <li>Create Platform Events</li>
+  <li>Publish Platform Events using Apex</li>
+  <li>Platform Event Limitations</li>
+</ul>
+
+<h2 id="what-are-salesforce-platform-events">What are Salesforce Platform Events</h2>
+
+<p>Use platform events to connect business processes in Salesforce and external apps through the exchange of real-time event data. Platform events are secure and scalable messages that contain data. Publishers publish event messages that subscribers receive in real-time. To customize the data published, define platform event fields.</p>
+
+<p>Platform events are just like Custom Objects that can be Published with the information within their fields and can be subscribed by External( MuleSoft ) or Internal( Lightning Web Components, Flows ) Sources to provide Real-time information sync between systems.</p>
+
+<h2 id="create-and-publish-platform-events">Create and Publish Platform Events</h2>
+
+<p>To create Platform event object follow below steps:</p>
+
+<ul>
+  <li>Go to setup and Search Platform Events</li>
+  <li>Click on Platform Events.</li>
+  <li>Here click new. You can provide Label and API Name of your Platform event here.</li>
+  <li>Now click on Save.</li>
+  <li>After Your Platform Event object created scroll down to custom fields section and click new here.</li>
+  <li>Create a new field:
+    <ul>
+      <li>API Name: Message</li>
+      <li>Label: Message</li>
+      <li>Type: Text(255)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Your Platform Event Object should look like below</p>
+
+<p><img src="/Salesforce-spices/assets/img/PlatformEvent-SS-1.png" alt="Install CLI page" /></p>
+
+<h2 id="publish-platform-events-using-apex">Publish Platform Events Using Apex:</h2>
+
+<p>To Publish a Platform Event we can utilize Apex Anonymous scripts. You can also use the same code to Publish Platform Event from your Apex Trigger and Batch.</p>
+
+<p>Copy paste the below Script into your Developer Console Execute Apex Anonymous window
+Here the Triggers related List show if you have created any Apex Triggers for the Platform Events. Platform Events only support After Insert Triggers. The Subscriptions list shows all the sources that have subscribed to this Events. This list will not show any Source that subscribe using CometId.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Database</span><span class="p">.</span><span class="nx">SaveResult</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">EventBus</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span> <span class="k">new</span> <span class="nx">Case__e</span><span class="p">(</span> <span class="nx">Message__c</span><span class="o">=</span><span class="dl">'</span><span class="s1">Test Message</span><span class="dl">'</span> <span class="p">)</span> <span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">isSuccess</span><span class="p">())</span> <span class="p">{</span>
+    <span class="nx">System</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="dl">'</span><span class="s1">Successfully published event.</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="nx">result</span><span class="p">.</span><span class="nx">getErrors</span><span class="p">().</span><span class="nx">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">){</span>
+        <span class="nx">System</span><span class="p">.</span><span class="nx">debug</span><span class="p">(</span><span class="dl">'</span><span class="s1">Error::</span><span class="dl">'</span><span class="o">+</span><span class="nx">result</span><span class="p">.</span><span class="nx">getErrors</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Replace the Case__e with your Platform Event API name and provide any values for Message__c field. Now click on Execute. Check for Debug logs if it show shows success message then you Events are published successfully.</p>
+
+<p>To checkout what information is published from your Platform event, we will discuss this in our next blog.</p>
+
+<h2 id="platform-event-limitations">Platform Event Limitations</h2>
+
+<p>While using the Events one should always take considerations over the Govern Limits provided by the Salesforce for creating and publishing Events. Following are some of those limits:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Description</th>
+      <th style="text-align: center">Unlimited</th>
+      <th style="text-align: center">Enterprise</th>
+      <th>Developer</th>
+      <th>Professional Edition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Maximum number of platform event definitions that can be created in an org</td>
+      <td style="text-align: center">100</td>
+      <td style="text-align: center">50</td>
+      <td>5</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Maximum number of concurrent CometD clients (subscribers) across all channels and for all event types</td>
+      <td style="text-align: center">2000</td>
+      <td style="text-align: center">1000</td>
+      <td>20</td>
+      <td>20</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Maximum number of processes that can subscribe to a platform event</td>
+      <td style="text-align: center">4000</td>
+      <td style="text-align: center">4000</td>
+      <td>4000</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Maximum number of active processes that can subscribe to a platform event</td>
+      <td style="text-align: center">2000</td>
+      <td style="text-align: center">2000</td>
+      <td>2000</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>So as we have seen Platform events can be a great tool for Automated Integration but we should also keep an on all the Limits and also on if the requirement really needs Platform Events.</p>
+
+<p>Thanks for Reading !!</p>
+:ET

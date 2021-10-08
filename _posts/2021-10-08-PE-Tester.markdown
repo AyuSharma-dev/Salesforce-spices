@@ -1,0 +1,77 @@
+---
+layout: post
+title: Testing out Salesforce Platform Events
+date: 2021-10-8
+description: Learn how to test the Platform Events in Real time # Add post description (optional)
+icon: pe-testing.jpg # Add image post (optional)
+img: pe-testing.jpg
+fig-caption: # Add figcaption (optional)
+tags: [Salesforce, Platform Events, APIS, Integration]
+---
+
+## What we are about to learn
+In This blog we will Discuss Various ways to Test Platform Events
+
+
+## Overview
+Platform Events are cool, fast, easy and optimized way to build an Integration between two sources with a real time sync. Platform events are easy to setup and publish as we discussed in our previous [blog]({{site.baseurl}}/Setup-SF-PE-intro/). 
+
+Testing out Platform events can be frustrated specially when events are used for Integration and you don't have access to the Other system. So to find out what information events are actually publishing can be a headache for QA and Devs. But don't worry I have gathered some of the best ways to test Platform Events. So lets start.
+
+
+## The Easiest and Cleanest way
+
+I have created a tool recently that can subscribe to the Platform Events along with Push Topics and can show the real time information when you events are published. The tool name is Platform Event Tester ( I love being straight forward ;) ) its easy to use and open source. The tool utilizes Oauth2.0 to Authorize the Org so its secure and no risk involved.
+
+You can find the tool [here](https://pe-tester.herokuapp.com/).
+
+A video tutorial is below:
+
+![Video tutorial PE-Tester]({{site.baseurl}}/assets/img/pe-tester-tutorial.gif)
+
+If you like this tool then you can support me on the repo [!here](https://github.com/AyuSharma-dev/PE-Tester).
+
+
+## Test Platform Events using Apex Trigger
+
+Platform Events support After Trigger creation. So whenever the Platform Event published this Trigger will run and you can add System debugs here to debug the subscribed events detail that is passed on from another system. 
+
+You can use the below code as an example for Trigger.
+
+```java
+// Trigger for catching Low_Ink events.
+trigger TriggerName on APINameOfPlatformEvent (after insert) {    
+    
+    for (EventName event : Trigger.New) {
+        System.debug('Event Details: '+event);
+    }
+
+}
+```
+> This case of testing Platform Events is not suggested because you have to create a Trigger just for the testing and it cannot be done on the Production env.
+
+<br/>
+## Debug Platform Events when Publishing
+
+Another way to test Platform events is by Debugging the details at the moment when you publish the Events. You can update your Event publishing code from the below code
+
+```java
+Database.SaveResult result = EventBus.publish( new eventApiName( Message__c='Test Message' ) );
+if (result.isSuccess()) {
+    System.debug('Successfully published event.');
+    System.debug(result) //this will print the published information.
+} else {
+    if( result.getErrors().size() > 0 ){
+        System.debug('Error::'+result.getErrors());
+    }
+}
+```
+
+<br/><br/>
+So these are the various way we can use to Test out the Platform events. Checkout this [blog] to find to see how you can test the Events in Test class.
+
+Thanks for Reading !!
+
+### Related Blogs
+[Introduction to Salesforce Platform Events]({{site.baseurl}}/Setup-SF-PE-intro/)<br/>
+[Platform Events Unit Testing in Test Class]({{site.baseurl}}/PE-TestClass/)<br/>

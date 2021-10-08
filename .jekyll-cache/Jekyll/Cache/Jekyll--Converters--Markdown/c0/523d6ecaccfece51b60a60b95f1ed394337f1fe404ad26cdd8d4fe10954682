@@ -1,0 +1,72 @@
+I"Ô%<h2 id="what-we-are-about-to-learn">What we are about to learn</h2>
+<p>In This blog we will Learn how to Create a Test class for the Platform Event logic with valid unit testing.</p>
+
+<h2 id="overview">Overview</h2>
+<p>Platform Events are cool, fast, easy and optimized way to build an Integration between two sources with a real time sync. Platform events are easy to setup and publish as we discussed in our previous <a href="/Salesforce-spices/Setup-SF-PE-intro/">blog</a>.</p>
+
+<p>Test class are compulsory in Salesforce with atleast 75% of code coverage but along with Code coverage an ideal class should have proper unit testing with System asserts for the performed logic in the main class.</p>
+
+<p>Creating Test classes for Platform Events can be pain because Test classes cannot subscribe to the Platform Events till now so you never know if events are published successfully. In the below part we will see how to test out that if your Platform events are published successfully or stopped due to some error.</p>
+
+<h3 id="main-class">Main Class</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="n">without</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">PublishEventsClass</span> <span class="o">{</span>
+    
+    <span class="nd">@TestVisible</span> <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Integer</span> <span class="n">successPublishCount</span><span class="o">;</span> <span class="c1">//This variable will keep the Successful Events number</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">publishAccountDetails</span><span class="o">(</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Account</span><span class="o">&gt;</span> <span class="n">newAccounts</span> <span class="o">){</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="n">event__e</span><span class="o">&gt;</span> <span class="n">eventsToPublish</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">List</span><span class="o">&lt;</span><span class="n">event__e</span><span class="o">&gt;();</span>
+        <span class="k">for</span><span class="o">(</span> <span class="nc">Account</span> <span class="n">acct</span> <span class="o">:</span> <span class="n">newAccounts</span> <span class="o">){</span>
+            <span class="n">eventsToPublish</span><span class="o">.</span><span class="na">add</span><span class="o">(</span> <span class="k">new</span> <span class="n">event__e</span><span class="o">(</span> <span class="nc">Name</span> <span class="o">=</span> <span class="n">acct</span><span class="o">.</span><span class="na">Name</span><span class="o">,</span> <span class="n">website__c</span> <span class="o">=</span> <span class="n">acct</span><span class="o">.</span><span class="na">Website</span> <span class="o">)</span> <span class="o">);</span> <span class="c1">//Creating Events to Publish</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span><span class="o">(!</span><span class="n">eventsToPublish</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()){</span>
+            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Database</span><span class="o">.</span><span class="na">SaveResult</span><span class="o">&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="nc">EventBus</span><span class="o">.</span><span class="na">publish</span><span class="o">(</span><span class="n">eventsToPublish</span><span class="o">);</span> 
+            <span class="n">successPublishCount</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">Database</span><span class="o">.</span><span class="na">SaveResult</span> <span class="n">sr</span> <span class="o">:</span> <span class="n">results</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">sr</span><span class="o">.</span><span class="na">isSuccess</span><span class="o">())</span> <span class="o">{</span>
+                    <span class="nc">System</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="err">'</span><span class="nc">Successfully</span> <span class="n">published</span> <span class="n">event</span><span class="o">.</span><span class="err">'</span><span class="o">);</span>
+                    <span class="n">successPublishCount</span> <span class="o">+=</span> <span class="mi">1</span><span class="o">;</span> <span class="c1">//Increment for each successful event</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="k">if</span><span class="o">(</span> <span class="n">sr</span><span class="o">.</span><span class="na">getErrors</span><span class="o">().</span><span class="na">size</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">){</span>
+                        <span class="nc">System</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="err">'</span><span class="nl">Error:</span><span class="o">:</span><span class="err">'</span><span class="o">+</span><span class="n">sr</span><span class="o">.</span><span class="na">getErrors</span><span class="o">().</span><span class="na">size</span><span class="o">());</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="test-class-for-the-above-class">Test Class For The Above Class</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@isTest</span>
+<span class="kd">private</span> <span class="n">without</span> <span class="n">sharing</span> <span class="kd">class</span> <span class="nc">PublishEventsClassTest</span><span class="o">{</span>
+    
+    <span class="nd">@isTest</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testMethodEx</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Account</span><span class="o">&gt;</span> <span class="n">accounts</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Account</span><span class="o">&gt;();</span>
+        <span class="k">for</span><span class="o">(</span> <span class="nc">Integer</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++</span> <span class="o">){</span>
+            <span class="n">accounts</span><span class="o">.</span><span class="na">add</span><span class="o">(</span> <span class="k">new</span> <span class="nc">Account</span><span class="o">(</span> <span class="nc">Name</span> <span class="o">=</span> <span class="err">'</span><span class="n">test</span> <span class="err">'</span><span class="o">+</span><span class="n">i</span> <span class="o">)</span> <span class="o">);</span> <span class="c1">//Creating Sample Account records.</span>
+        <span class="o">}</span>
+
+        <span class="nc">Test</span><span class="o">.</span><span class="na">startTest</span><span class="o">();</span>
+        <span class="nc">PublishEventsClass</span><span class="o">.</span><span class="na">publishAccountDetails</span><span class="o">(</span> <span class="n">accounts</span> <span class="o">);</span> <span class="c1">//Calling the Publish method with Accounts</span>
+        <span class="nc">Test</span><span class="o">.</span><span class="na">stopTest</span><span class="o">();</span>
+
+        <span class="c1">//Below Assert will check if there are less Successfully published events then the number of Accounts Passed.</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">(</span> <span class="n">accounts</span><span class="o">.</span><span class="na">size</span><span class="o">(),</span> <span class="nc">PublishEventsClass</span><span class="o">.</span><span class="na">successPublishCount</span><span class="o">,</span> <span class="err">'</span><span class="nc">Platform</span> <span class="nc">Events</span> <span class="n">not</span> <span class="nc">Published</span> <span class="nc">Successfully</span><span class="o">.</span><span class="err">'</span> <span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p><br />
+Above Unit testing method will make the test class fail if there are some issues in Publishing the events. So instead of just getting the code coverage we should always try to test the executed logics in the main class.</p>
+
+<p>Thanks for Reading !!</p>
+
+<p><br /></p>
+<h3 id="related-blogs">Related Blogs</h3>
+<p><a href="/Salesforce-spices/Setup-SF-PE-intro/">Introduction to Salesforce Platform Events</a><br />
+<a href="/Salesforce-spices/PE-Tester/">Platform Events Test in Real Time</a><br /></p>
+
+:ET

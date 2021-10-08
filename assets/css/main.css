@@ -1137,8 +1137,7 @@ footer .copyright {
 }
 
 .post .post-thumbnail {
-  width: 30%;
-  max-width: 100%;
+  width: 174px;
   min-height: 11rem;
   -webkit-background-size: cover;
           background-size: cover;
@@ -1478,4 +1477,8 @@ a.newer-posts:hover {
   .post .post-content .post-title a {
     font-size: 21px;
   }
+}
+
+.err{
+  background-color: unset !important;
 }
