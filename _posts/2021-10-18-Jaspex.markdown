@@ -1,0 +1,41 @@
+---
+layout: post
+title: Convert JSON Into Apex JSON Generator Class
+date: 2021-10-17
+description: How to Convert Hard Coded JSON into Apex JSON Generator Class # Add post description (optional)
+icon: jaspexLogo.png
+img: jaspexScreen(1).png # Add image post (optional)
+fig-caption: # Add figcaption (optional)
+tags: [Salesforce, CLI, VScode]
+---
+
+## What we are about to learn
+* What is JSON Generator Class in Apex
+* How to Convert Hard coded JSON into JSON Generator Class Automatically
+
+## What is JSON Generator Class in Apex
+
+Writing a hard coded JSON surrounded by single inverted commas can make your code ugly and also can mess the correct encoding of the Json text. To avoid using the Hard coded Json Salesforce provides JSONGenerator class. The JSONGenerator class is provided to enable the generation of standard JSON-encoded content and gives you more control on the structure of the JSON output. 
+
+This class has various Methods that can be used to write the correct type of data into your Json String that you can use for you Rest API request body or may be for some other purpose. 
+
+## How to Convert Hard coded JSON into JSON Generator Class Automatically
+
+Yes we know that JSON Generator class is better looking than hard coded JSON but it takes more time to write down a JSON string in formate of the JSON Generator class, so what should we do in this case.
+
+Don't worry about that, I have created a WebTool that can be used to convert your JSON into JSON Generator class in an instant. Its just copy paste work now. You can take a tutorial from the below video.
+
+![JASPEX Tutorial]({{site.baseurl}}/assets/img/jaspexTutorial.gif)
+
+So all you have to do is paste JSON in left side text area field and press the button at bottom to generate the JSON Generator class. Then you can copy the generated method and use it directly in your code.
+
+### Convert Quoted JSON
+
+Its possible that we already have a hardcoded JSON in our existing apex class where JSON string is surrounded by Single inverted commas. This tool can also handle that and convert it into JSON Generator class as well. All you have to do is select the checkbox at top for the Quoted JSON.
+
+![Install CLI page]({{site.baseurl}}/assets/img/jaspexTutorialQuoted.gif)
+
+
+So this is how you can convert Your JSON into JSON generator class easily. If you like this tool please give feedback on the repository [here](https://github.com/AyuSharma-dev/jaspex)
+
+Thanks for Reading !!
