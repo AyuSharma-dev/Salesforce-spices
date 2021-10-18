@@ -8,4 +8,6 @@ group :jekyll_plugins do
   gem "jemoji"
 end
 
+gem 'jekyll-seo-tag'
+
 gem "webrick", "~> 1.7"

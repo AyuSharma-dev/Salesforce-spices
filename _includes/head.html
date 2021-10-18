@@ -1,5 +1,7 @@
 <head>
+  {% seo %}
 	<meta charset="utf-8">
+  <link rel="icon" href="{{site.baseurl}}/assets/img/{% if site.author-img %}{{site.author-img}}{% endif %}">
 	<title>{% if page.title %}{{page.title}} - {{site.title}}{% else %}{{site.title}}{% endif %}</title>
 
   <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
