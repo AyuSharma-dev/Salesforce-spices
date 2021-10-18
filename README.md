@@ -1,4 +1,4 @@
-## This Repo if for My Blog for various Salesforce topics.
+## This Repo is for My Blog about various Salesforce topics.
 
 You can find the blog [here](https://ayusharma-dev.github.io/Salesforce-spices/).
 
